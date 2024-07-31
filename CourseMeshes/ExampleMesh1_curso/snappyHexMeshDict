@@ -1,0 +1,231 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  dev
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Which of the steps to run?
+castellatedMesh true;
+snap            true;
+addLayers       false;
+
+geometry 
+{
+    Solid1.stl  
+    {
+        type triSurfaceMesh;
+        name Solid1;
+    }
+    Barlovento.stl
+    {
+        type triSurfaceMesh;
+        name Barlovento;
+    }
+    Sotavento.stl
+    {
+        type triSurfaceMesh;
+        name Sotavento;
+    }
+    Cubierta.stl
+    {
+        type triSurfaceMesh;
+        name Cubierta;
+    }
+    MIzquierdo.stl
+    {
+        type triSurfaceMesh;
+        name MIzquierdo;
+    }
+    MDerecho.stl
+    {
+        type triSurfaceMesh;
+        name MDerecho;
+    }
+    Vref1
+    {
+        type triSurfaceMesh;
+        file "Vref1.stl";
+    }
+     Vref2
+    {
+        type triSurfaceMesh;
+        file "Vref2.stl";
+    }
+    Vref4
+    {
+        type triSurfaceMesh;
+        file "Vref4.stl";
+    }
+    Vreftop
+    {
+        type triSurfaceMesh;
+        file "Vreftop.stl";
+    }
+   
+};
+
+
+castellatedMeshControls 
+{
+    
+    maxLocalCells 2000000; 
+
+    maxGlobalCells 15000000; 
+
+    minRefinementCells 10;
+
+    nCellsBetweenLevels 2; 
+
+    features
+    (
+
+    );
+
+    refinementSurfaces 
+    {
+        "(Barlovento|Sotavento|Cubierta|MIzquierdo|MDerecho)"
+        {
+            level (2 2);
+            patchInfo
+            {
+            type wall;
+            }
+        }             
+    }
+
+    resolveFeatureAngle 30;
+
+    refinementRegions 
+    {
+       Vref1
+       {
+        mode inside;
+        levels ((1 1));
+       }
+       Vref2
+       {
+        mode inside;
+        levels ((2 2));
+       }
+       Vref4
+       {
+        mode inside;
+        levels ((2 2));
+       }
+
+       Vreftop
+       {
+        mode inside;
+        levels ((1 1));
+       }
+    }
+
+    locationInMesh (2.5 1 1);
+
+    allowFreeStandingZoneFaces true;
+}
+
+snapControls 
+{
+
+    nSmoothPatch 3;
+
+    tolerance 1.0;
+
+    nSolveIter 300;
+
+    nRelaxIter 5;
+
+    // Feature snapping
+
+        
+        nFeatureSnapIter 10;
+        
+        implicitFeatureSnap true;
+        
+        explicitFeatureSnap false;
+
+        // Detect features between multiple surfaces.
+        multiRegionFeatureSnap true;
+}
+
+
+// Settings for the layer addition.
+addLayersControls
+{
+    
+    relativeSizes false; // true or false
+
+    layers // Specifies the surfaces and the number of layers to add to each surface.
+    {
+        "(Barlovento|Sotavento|Cubierta|MIzquierdo|MDerecho)"
+        {
+            nSurfaceLayers 10;
+        }
+    }
+
+    expansionRatio 1.2; 
+
+    thickness 0.01; 
+
+    minThickness 0.00001;
+
+    nGrow 0;
+
+    featureAngle 60;
+
+    nRelaxIter 5;
+
+    nSmoothSurfaceNormals 1;
+
+    nSmoothNormals 3;
+
+    nSmoothThickness 10;
+
+    maxFaceThicknessRatio 0.5;
+
+    maxThicknessToMedialRatio 0.3;
+
+    minMedianAxisAngle 90;
+
+    nBufferCellsNoExtrude 0;
+
+    nLayerIter 50;
+
+    nRelaxedIter 20;
+}
+
+
+meshQualityControls // Quality criteria for the generated mesh.
+{
+    #include "meshQualityDict"
+
+    relaxed
+    {
+
+        maxNonOrtho 75;
+    }
+}
+
+// Advanced
+writeFlags // Control the writing of extra information to assist in post-processing and mesh analysis.
+(
+    scalarLevels    
+    layerSets       
+    layerFields     
+);
+
+mergeTolerance 1E-6;
+
+// ************************************************************************* //

@@ -1,0 +1,36 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  dev
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      surfaceFeaturesDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+surfaces 
+(
+  "BarloventoXXX.stl"
+  "Sotavento.stl"
+  "Cubierta.stl"
+  "MDerecho.stl"
+  "MIzquierdo.stl"
+  "Solid1.stl"
+  "Vref1.stl"
+  "Vref2.stl"
+  "Vref3.stl"
+  "Vref4.stl"
+  "Vreftop.stl"
+  
+);
+
+// Identify a feature when angle between faces < includedAngle
+includedAngle   150;
+
+// ************************************************************************* //

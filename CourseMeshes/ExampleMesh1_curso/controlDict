@@ -1,0 +1,63 @@
+ /*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2012                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Make sure all utilities know specialised models
+libs            (atmosphericModels);
+
+application     simpleFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         2000; //pasos de tiempo, en application de estacionario
+
+deltaT          1; //cambia en estado transitorio, Courant
+
+writeControl    timeStep; //escribir cada paso de tiempo
+
+writeInterval   20; //escribir cada paso de tiempo en intervalos de 1
+
+purgeWrite      0; //numero de carpetas finales de tiempo guardadas, usando 0 se escriben todas las carpetas
+
+writeFormat     ascii;
+
+writePrecision  10;
+
+writeCompression off; //gerar archivo comprimido de los pasos de tiempo
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true; //permite modificar simulacion en tiempo real de factores de relajacion y/o esquemas de discretizacion
+
+libs (
+         "libOpenFOAM.so"
+         "libsampling.so"
+         "libsimpleSwakFunctionObjects.so"
+         "libswakFunctionObjects.so"
+     );
+
+functions
+{
+    
+}
+
+// ************************************************************************* //
